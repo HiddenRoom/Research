@@ -48,6 +48,7 @@ module instructionDecode
 
   output [31:0]   imm_u,
   output [31:0]   imm_j,
+  output [31:0]   imm_b,
 );
 
   wire [6:0] opcode = instruction[6:0];
@@ -96,7 +97,8 @@ module instructionDecode
   assign _ebreak = (opcode == 7'b1110011 && instruction == 7'b000000000001_00000_000_00000_1110011);
 
   assign imm_u = {instruction[31:12], 12'b000000000000};
-  assign imm_j = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0}
+  assign imm_j = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0};
+  assign imm_b = {{12{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
 
 endmodule
 
