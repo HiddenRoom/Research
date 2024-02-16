@@ -101,8 +101,8 @@ module instructionDecode
   assign _or    = (opcode == 7'b0110011 && funct3 == 3'b110);
   assign _and   = (opcode == 7'b0110011 && funct3 == 3'b111);
   assign _fence = (opcode == 7'b0001111);
-  assign _ecall = (opcode == 7'b1110011 && instruction == 7'b000000000000_00000_000_00000_1110011);
-  assign _ebreak = (opcode == 7'b1110011 && instruction == 7'b000000000001_00000_000_00000_1110011);
+  assign _ecall = (opcode == 7'b1110011 && instruction[20] == 1'b0);
+  assign _ebreak = (opcode == 7'b1110011 && instruction[20] == 1'b1);
 
   assign imm_i = {{21{instruction[31]}}, instruction[30:20]};
   assign imm_s = {{21{instruction[31]}}, instruction[30:25], instruction[11:7]};
