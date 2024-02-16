@@ -46,9 +46,17 @@ module instructionDecode
   output          _ecall,
   output          _ebreak,
 
+  output [31:0]   imm_i,
+  output [31:0]   imm_s,
+  output [31:0]   imm_b,
   output [31:0]   imm_u,
   output [31:0]   imm_j,
-  output [31:0]   imm_b,
+
+  output [4:0]    shamt,
+
+  output [4:0]    rs2,
+  output [4:0]    rs1,
+  output [4:0]    rd
 );
 
   wire [6:0] opcode = instruction[6:0];
@@ -96,9 +104,17 @@ module instructionDecode
   assign _ecall = (opcode == 7'b1110011 && instruction == 7'b000000000000_00000_000_00000_1110011);
   assign _ebreak = (opcode == 7'b1110011 && instruction == 7'b000000000001_00000_000_00000_1110011);
 
+  assign imm_i = {{21{instruction[31]}}, instruction[30:20]};
+  assign imm_s = {{21{instruction[31]}}, instruction[30:25], instruction[11:7]};
+  assign imm_b = {{12{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
   assign imm_u = {instruction[31:12], 12'b000000000000};
   assign imm_j = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0};
-  assign imm_b = {{12{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
+
+  assign shamt = instruction[24:20];
+
+  assign rs2 = instruction[24:20];
+  assign rs1 = instruction[19:15];
+  assign rd = instruction[11:7];
 
 endmodule
 
