@@ -17,7 +17,7 @@ module alu
                  add, xor, or, and, subtract, shift left logical,
                  shift right logical, shift right arithmetic */
 
-  output [31:0]   dataOut /* for comparisons, dataOut will be 1 if true and 0 if false */
+  output reg [31:0]   dataOut /* for comparisons, dataOut will be 1 if true and 0 if false */
 );
 
   wire signed [31:0] dataIn0Signed = dataIn0;
@@ -26,8 +26,21 @@ module alu
   always @(*)
   begin
     case (operation)
-      4'b0000 :   dataOut = (dataIn0 == dataIn1)
-      4'b0001 :   dataOut = (dataIn0) 
+      4'b0000 :   dataOut = (dataIn0 == dataIn1);
+      4'b0001 :   dataOut = (dataIn0 != dataIn1); 
+      4'b0010 :   dataOut = (dataIn0Signed < dataIn1Signed);
+      4'b0011 :   dataOut = (dataIn0Signed >= dataIn1Signed);
+      4'b0100 :   dataOut = (dataIn0 < dataIn1); 
+      4'b0101 :   dataOut = (dataIn0 >= dataIn1); 
+      4'b0110 :   dataOut = (dataIn0 + dataIn1); 
+      4'b0111 :   dataOut = (dataIn0 ^ dataIn1); 
+      4'b1000 :   dataOut = (dataIn0 | dataIn1); 
+      4'b1001 :   dataOut = (dataIn0 & dataIn1); 
+      4'b1010 :   dataOut = (dataIn0 - dataIn1); 
+      4'b1011 :   dataOut = (dataIn0 << dataIn1[4:0]);
+      4'b1100 :   dataOut = (dataIn0 >> dataIn1[4:0]);
+      4'b1101 :   dataOut = (dataIn0Signed >>> dataIn1[4:0]);
+    endcase
   end
 
 endmodule
