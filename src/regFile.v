@@ -33,6 +33,8 @@ module regFile
   
   reg [31:0] regFile [31:0];
 
+  assign regFile[0] = 0;
+
   always @(posedge clk)
   begin
     if (writeEnable0)
