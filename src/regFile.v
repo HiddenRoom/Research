@@ -25,13 +25,13 @@ module regFile
   input [31:0]    dataIn2,
   input [31:0]    dataIn3,
 
-  output [31:0]   dataOut0,
-  output [31:0]   dataOut1,
-  output [31:0]   dataOut2,
-  output [31:0]   dataOut3
+  output reg [31:0] dataOut0,
+  output reg [31:0] dataOut1,
+  output reg [31:0] dataOut2,
+  output reg [31:0] dataOut3
 );
   
-  reg [31:0] regFile [4:0];
+  reg [31:0] regFile [31:0];
 
   always @(posedge clk)
   begin
@@ -52,10 +52,10 @@ module regFile
       regFile[write3] <= dataIn3;
     end
     
-    dataOut0 <= regFile[read0]
-    dataOut1 <= regFile[read1]
-    dataOut2 <= regFile[read2]
-    dataOut3 <= regFile[read3]
+    dataOut0 <= regFile[read0];
+    dataOut1 <= regFile[read1];
+    dataOut2 <= regFile[read2];
+    dataOut3 <= regFile[read3];
   end
 
 endmodule
