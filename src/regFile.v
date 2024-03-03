@@ -31,7 +31,7 @@ module regFile
   output reg [31:0] dataOut3
 );
   
-  reg [31:0] regFile [31:0];
+  reg [31:0] regFile [0:31];
 
   assign regFile[0] = 0;
 
