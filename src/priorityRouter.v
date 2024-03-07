@@ -2,25 +2,28 @@
 `define __PRIORITYROUTER__
 
 module priorityRouter
+#(
+  parameter BLOCK_SIZE = 4
+)
 (
   // take in input val and version num and read input with version num and
   // output the nearest version inside with a version num less than input
   // version num 
-  input [1:0]     version0, 
-  input [1:0]     version1, 
-  input [1:0]     version2, 
-  input [1:0]     version3, 
+  input [BLOCK_SIZE - 1:0]     version0, 
+  input [BLOCK_SIZE - 1:0]     version1, 
+  input [BLOCK_SIZE - 1:0]     version2, 
+  input [BLOCK_SIZE - 1:0]     version3, 
 
   input [31:0]    dataIn0, 
   input [31:0]    dataIn1, 
   input [31:0]    dataIn2, 
   input [31:0]    dataIn3, 
 
-  input [1:0]     readVersion, 
+  input [BLOCK_SIZE - 1:0]     readVersion, 
 
-  output [31:0]   dataOut, 
-);
-  
+  output [31:0]   dataOut
+);_
+
   always @(*)
   begin
     if (version0 < readVersion && version0 > version1 && version0 > version2 && version0 > version3)

@@ -17,7 +17,7 @@ module alu
                  add, xor, or, and, subtract, shift left logical,
                  shift right logical, shift right arithmetic */
 
-  output reg [31:0]   dataOut /* for comparisons, dataOut will be 1 if true and 0 if false */
+  output reg [31:0]  dataOut /* for comparisons, dataOut will be 1 if true and 0 if false */
 );
 
   wire signed [31:0] dataIn0Signed = dataIn0;
