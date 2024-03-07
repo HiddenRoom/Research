@@ -3,7 +3,7 @@
 
 module regFile
 (
-  input clk,
+  input           clk,
 
   input [4:0]     read0,
   input [4:0]     read1,
