@@ -26,12 +26,12 @@ module alu
   always @(*)
   begin
     case (operation)
-      4'b0000 :   dataOut = (dataIn0 == dataIn1);
-      4'b0001 :   dataOut = (dataIn0 != dataIn1); 
-      4'b0010 :   dataOut = (dataIn0Signed < dataIn1Signed);
-      4'b0011 :   dataOut = (dataIn0Signed >= dataIn1Signed);
-      4'b0100 :   dataOut = (dataIn0 < dataIn1); 
-      4'b0101 :   dataOut = (dataIn0 >= dataIn1); 
+      4'b0000 :   dataOut = {32{(dataIn0 == dataIn1)}};
+      4'b0001 :   dataOut = {32{(dataIn0 != dataIn1)}};
+      4'b0010 :   dataOut = {32{(dataIn0Signed < dataIn1Signed)}}; 
+      4'b0011 :   dataOut = {32{(dataIn0Signed >= dataIn1Signed)}}; 
+      4'b0100 :   dataOut = {32{(dataIn0 < dataIn1)}}; 
+      4'b0101 :   dataOut = {32{(dataIn0 >= dataIn1)}}; 
       4'b0110 :   dataOut = (dataIn0 + dataIn1); 
       4'b0111 :   dataOut = (dataIn0 ^ dataIn1); 
       4'b1000 :   dataOut = (dataIn0 | dataIn1); 
