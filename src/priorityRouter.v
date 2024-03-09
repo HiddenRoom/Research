@@ -3,49 +3,39 @@
 
 module priorityRouter
 #(
-  parameter BLOCK_SIZE = 4
+  parameter DATA_WIDTH = 32,
+  parameter VERSION_WIDTH = 4,
+  parameter VERSION_NUM = 4
 )
 (
   // take in input val and version num and read input with version num and
   // output the nearest version inside with a version num less than input
   // version num 
-  input [BLOCK_SIZE - 1:0]     version0, 
-  input [BLOCK_SIZE - 1:0]     version1, 
-  input [BLOCK_SIZE - 1:0]     version2, 
-  input [BLOCK_SIZE - 1:0]     version3, 
+  input [VERSION_WIDTH * VERSION_NUM - 1:0] versions, 
 
-  input [31:0]    dataIn0, 
-  input [31:0]    dataIn1, 
-  input [31:0]    dataIn2, 
-  input [31:0]    dataIn3, 
+  input [DATA_WIDTH * VERSION_NUM - 1:0]    dataInputs, 
 
-  input [BLOCK_SIZE - 1:0]     readVersion, 
+  input [VERSION_WIDTH - 1:0]               readVersion, 
 
-  output reg [31:0]            dataOut
+  output reg [DATA_WIDTH - 1:0]             dataOut
 );
+
+  genvar i;
+
+  reg [VERSION_WIDTH - 1:0] greatest;
 
   always @(*)
   begin
-    if (version0 < readVersion && version0 > version1 && version0 > version2 && version0 > version3)
+    greatest = readVersion;
+    for(i = 1; i < VERSION_NUM + 1; i = i + 1)
     begin
-      dataOut = dataIn0;
+      if(versions[(i * VERSION_WIDTH) - 1:(i * VERSION_WIDTH) - VERSION_WIDTH] < greatest)
+      begin
+        greatest = versions[(i * VERSION_WIDTH) - 1:(i * VERSION_WIDTH) - VERSION_WIDTH];
+      end
     end
-    else if (version1 < readVersion && version1 > version0 && version1 > version2 && version1 > version3)
-    begin
-      dataOut = dataIn1;
-    end
-    else if (version2 < readVersion && version2 > version0 && version2 > version1 && version2 > version3)
-    begin
-      dataOut = dataIn2;
-    end
-    else if (version3 < readVersion && version3 > version0 && version3 > version1 && version3 > version2)
-    begin
-      dataOut = dataIn3;
-    end
-    else
-    begin
-      dataOut = 0;
-    end
+
+    dataOut = dataInputs[(greatest * DATA_WIDTH) - 1:(greatest * DATA_WIDTH) - DATA_WIDTH];
   end
 
 endmodule
