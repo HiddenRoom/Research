@@ -21,33 +21,31 @@ module priorityRouter
 
   input [BLOCK_SIZE - 1:0]     readVersion, 
 
-  output [31:0]   dataOut
+  output reg [31:0]            dataOut
 );
 
   always @(*)
   begin
     if (version0 < readVersion && version0 > version1 && version0 > version2 && version0 > version3)
     begin
-      dataOut <= dataIn0;
+      dataOut = dataIn0;
     end
     else if (version1 < readVersion && version1 > version0 && version1 > version2 && version1 > version3)
     begin
-      dataOut <= dataIn1;
+      dataOut = dataIn1;
     end
     else if (version2 < readVersion && version2 > version0 && version2 > version1 && version2 > version3)
     begin
-      dataOut <= dataIn2;
+      dataOut = dataIn2;
     end
     else if (version3 < readVersion && version3 > version0 && version3 > version1 && version3 > version2)
     begin
-      dataOut <= dataIn3;
+      dataOut = dataIn3;
     end
-    /*
     else
     begin
-      dataOut <= 0;
+      dataOut = 0;
     end
-    */
   end
 
 endmodule
