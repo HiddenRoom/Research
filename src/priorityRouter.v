@@ -22,7 +22,7 @@ module priorityRouter
   input [BLOCK_SIZE - 1:0]     readVersion, 
 
   output [31:0]   dataOut
-);_
+);
 
   always @(*)
   begin
