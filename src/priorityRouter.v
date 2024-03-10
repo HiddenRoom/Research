@@ -22,14 +22,14 @@ module priorityRouter
 
   integer i;
 
-  reg [VERSION_WIDTH - 1:0] greatest = 2 ** VERSION_WIDTH;
+  reg [VERSION_WIDTH - 1:0] greatest;
 
   always @(*)
   begin
-    greatest = readVersion;
+    greatest = 0;
     for(i = 1; i < VERSION_NUM + 1; i = i + 1)
     begin
-      if(versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH] < greatest)
+      if(versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH] > greatest && versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH] < readVersion)
       begin
         greatest = versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH];
       end
