@@ -20,22 +20,22 @@ module priorityRouter
   output reg [DATA_WIDTH - 1:0]             dataOut
 );
 
-  genvar i;
+  integer i;
 
-  reg [VERSION_WIDTH - 1:0] greatest;
+  reg [VERSION_WIDTH - 1:0] greatest = 2 ** VERSION_WIDTH;
 
   always @(*)
   begin
     greatest = readVersion;
     for(i = 1; i < VERSION_NUM + 1; i = i + 1)
     begin
-      if(versions[(i * VERSION_WIDTH) - 1:(i * VERSION_WIDTH) - VERSION_WIDTH] < greatest)
+      if(versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH] < greatest)
       begin
-        greatest = versions[(i * VERSION_WIDTH) - 1:(i * VERSION_WIDTH) - VERSION_WIDTH];
+        greatest = versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH];
       end
     end
 
-    dataOut = dataInputs[(greatest * DATA_WIDTH) - 1:(greatest * DATA_WIDTH) - DATA_WIDTH];
+    dataOut = dataInputs[(greatest - 1) * DATA_WIDTH +:DATA_WIDTH];
   end
 
 endmodule
