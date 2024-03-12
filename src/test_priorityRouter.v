@@ -1,11 +1,12 @@
 `include "priorityRouter.v"
-`define TEST_NUM 20
 
 module test_priorityRouter;
 
 localparam DATA_WIDTH = 32;
 localparam VERSION_WIDTH = 4;
 localparam VERSION_NUM = 4;
+
+localparam TEST_NUM = 20;
 
 integer i, j;
 
