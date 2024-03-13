@@ -28,16 +28,18 @@ initial
 begin
   for(i = 0; i < TEST_NUM; i = i + 1)
   begin
+    versions = $random;
+    dataInputs = $random * DATA_WIDTH * VERSION_NUM;
+
     for(j = 0; j < VERSION_NUM; j = j + 1)
     begin
-      dataInputs[(i - 1) * DATA_WIDTH +:DATA_WIDTH] = $random;
-      versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH] = $random;
-      $display("dataInputs[%d]: %d\nversions[%d]: %b\n", i, dataInputs[(i - 1) * DATA_WIDTH +:DATA_WIDTH], i, versions[(i - 1) * VERSION_WIDTH +:VERSION_WIDTH]);
+      $display("dataInputs[%d]: %d\nversions[%d]: %b\n", j, dataInputs[j * DATA_WIDTH +:DATA_WIDTH], j, versions[j * VERSION_WIDTH +:VERSION_WIDTH]);
     end
-    readVersion = $random;
 
-    $display("readVersion: %b\ndataOut: %d\n\n\n\n", readVersion, dataOut);
+    readVersion = $random % (2 ** VERSION_WIDTH);
+
     #1;
+    $display("readVersion: %b\ndataOut: %d\n\n\n\n", readVersion, dataOut);
   end
 
 end
