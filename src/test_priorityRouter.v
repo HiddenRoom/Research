@@ -2,7 +2,7 @@
 
 module test_priorityRouter;
 
-localparam DATA_WIDTH = 32;
+localparam DATA_WIDTH = 8;
 localparam VERSION_WIDTH = 4;
 localparam VERSION_NUM = 4;
 
@@ -18,7 +18,7 @@ reg [VERSION_WIDTH - 1:0] readVersion;
 
 wire [DATA_WIDTH - 1:0] dataOut;
 
-priorityRouter #(.DATA_WIDTH(32), .VERSION_WIDTH(VERSION_WIDTH), .VERSION_NUM(VERSION_NUM)) dut ( 
+priorityRouter #(.DATA_WIDTH(DATA_WIDTH), .VERSION_WIDTH(VERSION_WIDTH), .VERSION_NUM(VERSION_NUM)) dut ( 
                 .versions(versions), 
                 .dataInputs(dataInputs), 
                 .readVersion(readVersion), 
@@ -30,7 +30,7 @@ begin
 
   for(i = 0; i < TEST_NUM; i = i + 1)
   begin
-    dataInputs = $random * DATA_WIDTH * VERSION_NUM * 20;
+    dataInputs = $random * DATA_WIDTH * VERSION_NUM;
     versions = $random;
 
     for(j = 0; j < VERSION_NUM; j = j + 1)
