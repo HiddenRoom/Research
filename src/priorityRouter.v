@@ -22,24 +22,26 @@ module priorityRouter
 
   integer i;
 
+  reg [VERSION_NUM - 1:0] index;
   reg [VERSION_WIDTH - 1:0] greatest;
 
   always @(*)
   begin
+    index = 0;
     greatest = 0;
     for(i = 0; i < VERSION_NUM; i = i + 1)
     begin
+      $display("current: %b\npossibleNew: %b\nlimit: %b\n", greatest, versions[i * VERSION_WIDTH +:VERSION_WIDTH], readVersion);
       if(versions[i * VERSION_WIDTH +:VERSION_WIDTH] > greatest && versions[i * VERSION_WIDTH +:VERSION_WIDTH] < readVersion)
       begin
+        index = i;
         greatest = versions[i * VERSION_WIDTH +:VERSION_WIDTH];
       end
     end
+    $display("final: %b\n", greatest);
 
 
-    dataOut = dataInputs[greatest * DATA_WIDTH +:DATA_WIDTH];
-
-    $display("%b\n", greatest);
-    #1;
+    dataOut = dataInputs[index * DATA_WIDTH +:DATA_WIDTH];
   end
 
 endmodule

@@ -23,25 +23,24 @@ priorityRouter #(.DATA_WIDTH(32), .VERSION_WIDTH(VERSION_WIDTH), .VERSION_NUM(VE
                 .dataInputs(dataInputs), 
                 .readVersion(readVersion), 
                 .dataOut(dataOut));
-
+              
 initial
 begin
+  $monitor("readVersion: %b\ndataOut: %d\n\n\n\n", readVersion, dataOut);
+
   for(i = 0; i < TEST_NUM; i = i + 1)
   begin
+    dataInputs = $random * DATA_WIDTH * VERSION_NUM * 20;
     versions = $random;
-    dataInputs = $random * DATA_WIDTH * VERSION_NUM;
 
     for(j = 0; j < VERSION_NUM; j = j + 1)
     begin
       $display("dataInputs[%d]: %d\nversions[%d]: %b\n", j, dataInputs[j * DATA_WIDTH +:DATA_WIDTH], j, versions[j * VERSION_WIDTH +:VERSION_WIDTH]);
     end
 
-    readVersion = $random % (2 ** VERSION_WIDTH);
-
+    readVersion = $random;
     #1;
-    $display("readVersion: %b\ndataOut: %d\n\n\n\n", readVersion, dataOut);
   end
-
 end
 
 endmodule
