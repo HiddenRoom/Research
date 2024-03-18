@@ -5,9 +5,12 @@
 * the right */
 
 module alu 
+#(
+  parameter DATA_WIDTH = 32
+)
 (
-  input [31:0]    dataIn0,
-  input [31:0]    dataIn1, /* for shifts, dataIn1[4:0] has shamt */
+  input [DATA_WIDTH - 1:0]    dataIn0,
+  input [DATA_WIDTH - 1:0]    dataIn1, /* for shifts, dataIn1[4:0] has shamt */
 
   input [3:0]     operation, 
                  /* ceil(logb2(14)) bits encode 14 unique operations
@@ -17,21 +20,21 @@ module alu
                  add, xor, or, and, subtract, shift left logical,
                  shift right logical, shift right arithmetic */
 
-  output reg [31:0]  dataOut 
+  output reg [DATA_WIDTH - 1:0]  dataOut 
 );
 
-  wire signed [31:0] dataIn0Signed = dataIn0;
-  wire signed [31:0] dataIn1Signed = dataIn1;
+  wire signed [DATA_WIDTH - 1:0] dataIn0Signed = dataIn0;
+  wire signed [DATA_WIDTH - 1:0] dataIn1Signed = dataIn1;
 
   always @(*)
   begin
     case (operation)
-      4'b0000 :   dataOut = {32{(dataIn0 == dataIn1)}};
-      4'b0001 :   dataOut = {32{(dataIn0 != dataIn1)}};
-      4'b0010 :   dataOut = {32{(dataIn0Signed < dataIn1Signed)}}; 
-      4'b0011 :   dataOut = {32{(dataIn0Signed >= dataIn1Signed)}}; 
-      4'b0100 :   dataOut = {32{(dataIn0 < dataIn1)}}; 
-      4'b0101 :   dataOut = {32{(dataIn0 >= dataIn1)}}; 
+      4'b0000 :   dataOut = {DATA_WIDTH{(dataIn0 == dataIn1)}};
+      4'b0001 :   dataOut = {DATA_WIDTH{(dataIn0 != dataIn1)}};
+      4'b0010 :   dataOut = {DATA_WIDTH{(dataIn0Signed < dataIn1Signed)}}; 
+      4'b0011 :   dataOut = {DATA_WIDTH{(dataIn0Signed >= dataIn1Signed)}}; 
+      4'b0100 :   dataOut = {DATA_WIDTH{(dataIn0 < dataIn1)}}; 
+      4'b0101 :   dataOut = {DATA_WIDTH{(dataIn0 >= dataIn1)}}; 
       4'b0110 :   dataOut = (dataIn0 + dataIn1); 
       4'b0111 :   dataOut = (dataIn0 ^ dataIn1); 
       4'b1000 :   dataOut = (dataIn0 | dataIn1); 
