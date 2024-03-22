@@ -1,63 +1,45 @@
 `ifndef __REGFILE__
 `define __REGFILE__
 
-module regFile
+module regFile 
+#(
+    parameter REG_NUM = 32,
+    parameter DATA_WIDTH = 32,
+    parameter NUM_READ_PORTS = 4,
+    parameter NUM_WRITE_PORTS = 4
+) 
 (
-  input           clk,
+    input                       clk,
+    input [$clog2(REG_NUM)-1:0] readAddr [0:NUM_READ_PORTS-1],
+    input [$clog2(REG_NUM)-1:0] writeAddr [0:NUM_WRITE_PORTS-1],
 
-  input [4:0]     read0,
-  input [4:0]     read1,
-  input [4:0]     read2,
-  input [4:0]     read3,
+    input                       writeEnable [0:NUM_WRITE_PORTS-1],
 
-  input [4:0]     write0,
-  input [4:0]     write1,
-  input [4:0]     write2,
-  input [4:0]     write3,
+    input  [DATA_WIDTH-1:0]     dataInputs [0:NUM_WRITE_PORTS-1],
 
-  input           writeEnable0,
-  input           writeEnable1,
-  input           writeEnable2,
-  input           writeEnable3,
-
-  input [31:0]    dataIn0,
-  input [31:0]    dataIn1,
-  input [31:0]    dataIn2,
-  input [31:0]    dataIn3,
-
-  output reg [31:0] dataOut0,
-  output reg [31:0] dataOut1,
-  output reg [31:0] dataOut2,
-  output reg [31:0] dataOut3
+    output reg [DATA_WIDTH-1:0] dataOuts [0:NUM_READ_PORTS-1]
 );
-  
-  reg [31:0] regFile [0:31];
 
-  assign regFile[0] = 0;
+    reg [DATA_WIDTH-1:0] regFile [0:REG_NUM-1];
 
-  always @(posedge clk)
+    assign regFile[0] = 0;
+
+    always @(posedge clk) begin
+    end
+
+  always @(posedge clk) 
   begin
-    if (writeEnable0)
-    begin
-      regFile[write0] <= dataIn0;
+    for (int i = 0; i < NUM_READ_PORTS; i++) begin
+      dataOuts[i] <= regFile[readAddr[i]];
     end
-    else if (writeEnable1)
+
+    for (int i = 0; i < NUM_WRITE_PORTS; i++) 
     begin
-      regFile[write1] <= dataIn1;
+      if (writeEnable[i]) 
+      begin
+        regFile[writeAddr[i]] <= dataInputs[i];
+      end
     end
-    else if (writeEnable2)
-    begin
-      regFile[write2] <= dataIn2;
-    end
-    else if (writeEnable3)
-    begin
-      regFile[write3] <= dataIn3;
-    end
-    
-    dataOut0 <= regFile[read0];
-    dataOut1 <= regFile[read1];
-    dataOut2 <= regFile[read2];
-    dataOut3 <= regFile[read3];
   end
 
 endmodule
