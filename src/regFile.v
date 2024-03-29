@@ -21,21 +21,23 @@ module regFile
 );
 
   reg [DATA_WIDTH - 1:0] regFile [0:REG_NUM - 1];
+  
+  integer i;
 
   assign regFile[0] = 0;
 
   always @(posedge clk) 
   begin
-    for (int i = 0; i < READ_NUM; i++) 
+    for (i = 0; i < READ_NUM; i = i + 1) 
     begin
-      dataOuts[DATA_WIDTH * i +:DATA_WIDTH] <= regFile[readAddr[$clog2(REG_NUM) * i +:$clog2(REG_NUM)]];
+      dataOuts[DATA_WIDTH * i +:DATA_WIDTH] = regFile[readAddr[$clog2(REG_NUM) * i +:$clog2(REG_NUM)]];
     end
 
-    for (int i = 0; i < WRITE_NUM; i++) 
+    for (i = 0; i < WRITE_NUM; i = i + 1) 
     begin
       if (writeEnable[i]) 
       begin
-        regFile[writeAddr[$clog2(REG_NUM) *  i +:$clog2(REG_NUM)]] <= dataInputs[i];
+        regFile[writeAddr[$clog2(REG_NUM) *  i +:$clog2(REG_NUM)]] = dataInputs[DATA_WIDTH * i +:DATA_WIDTH];
       end
     end
   end
